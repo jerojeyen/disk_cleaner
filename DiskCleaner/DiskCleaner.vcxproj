@@ -78,7 +78,7 @@
     <ClInclude Include="errors.h" />
     <ClInclude Include="log.h" />
     <ClInclude Include="macros.h" />
-    <ClInclude Include="my_string.h" />
+    <ClInclude Include="str.h" />
     <ClInclude Include="options.h" />
     <ClInclude Include="params.h" />
     <ClInclude Include="path.h" />
@@ -91,7 +91,7 @@
     <ClCompile Include="errors.c" />
     <ClCompile Include="log.c" />
     <ClCompile Include="main.c" />
-    <ClCompile Include="my_string.c" />
+    <ClCompile Include="str.c" />
     <ClCompile Include="options.c" />
     <ClCompile Include="params.c" />
     <ClCompile Include="path.c" />
