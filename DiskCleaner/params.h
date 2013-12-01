@@ -1,0 +1,1 @@
+int get_params(int ac, char **av, char (*params)[100]);
