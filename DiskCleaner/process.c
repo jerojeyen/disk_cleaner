@@ -2,7 +2,7 @@
 #include <strsafe.h>
 #include <stdio.h>
 #include "log.h"
-#include "my_string.h"
+#include "str.h"
 #include "errors.h"
 #include "path.h"
 
