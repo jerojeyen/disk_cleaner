@@ -1,4 +1,8 @@
-char get_options(int ac, char **av, char *options, char (*message)[100]);
-char catch_options(char *param, int ac, char **av, int *k, int *index, char *options, char (*message)[100]);
-int has_option(char option, char *options);
-int is_valid_option(char option);
+char getOpts(int argc, char **argv, char *active_opts, char (*path)[260]);
+
+char matchOpts(char *arg, int argc, char **argv, int *argv_index,
+    int *active_opts_index, char *active_options, char (*path)[260]);
+
+int isActiveOpt(char opt, char *opts);
+
+int isValidOpt(char opt);
