@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void	s_downcase(char *s)
+void	strDownCase(char *s)
 {
 	while (*s)
 	{
@@ -12,7 +12,7 @@ void	s_downcase(char *s)
 	}
 }
 
-char	*s_trim(char *s)
+char	*strTrim(char *s)
 {
 	while (isspace(*s))
 		s++;
@@ -22,7 +22,7 @@ char	*s_trim(char *s)
 	return (s);
 }
 
-char	*s_sub(char *s, char *find, char *rep)
+char	*strSub(char *s, char *find, char *rep)
 {
 	char	buf[BUFF];
 	char	*srch;
