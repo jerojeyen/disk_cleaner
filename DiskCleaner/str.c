@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "str.h"
 
 void	strDownCase(char *s)
 {
@@ -29,8 +30,8 @@ char	*strSub(char *s, char *find, char *rep)
 		
 	if (!(srch = strstr(s, find)))
 		return (s);
-	strncpy(buf, str, srch - s);
+	strncpy(buf, srch, srch - s);
 	buffer[srch - s] = 0;
-	sprintf(buf + (srch - s), "%s%s", rep, p + strlen(find));
+	sprintf(buf + (srch - s), "%s%s", rep, srch + strlen(find));
 	return (buf);
 }
