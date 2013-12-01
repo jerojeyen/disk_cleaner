@@ -27,7 +27,7 @@
     <ClInclude Include="macros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="my_string.h">
+    <ClInclude Include="str.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="options.h">
@@ -59,7 +59,7 @@
     <ClCompile Include="log.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="my_string.c">
+    <ClCompile Include="str.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="options.c">
