@@ -69,7 +69,7 @@ int isActiveOpt(char opt, char *opts)
 {
   int i = 0;
 
-  while (opts[i] != '\0')
+  while (opts[i])
   {
     if (opt == opts[i])
     {
@@ -87,7 +87,7 @@ int isActiveOpt(char opt, char *opts)
 int isValidOpt(char opt)
 {
   int i = 0;
-  char available_opts[] = "idp";
+  char* available_opts = "idp";
 
   while (available_opts[i] != '\0')
   {
