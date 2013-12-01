@@ -74,6 +74,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="actions.h" />
+    <ClInclude Include="errors.h" />
+    <ClInclude Include="log.h" />
+    <ClInclude Include="macros.h" />
+    <ClInclude Include="my_string.h" />
+    <ClInclude Include="options.h" />
+    <ClInclude Include="params.h" />
+    <ClInclude Include="path.h" />
+    <ClInclude Include="process.h" />
+    <ClInclude Include="regedit.h" />
+    <ClInclude Include="service.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="actions.c" />
+    <ClCompile Include="errors.c" />
+    <ClCompile Include="log.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="my_string.c" />
+    <ClCompile Include="options.c" />
+    <ClCompile Include="params.c" />
+    <ClCompile Include="path.c" />
+    <ClCompile Include="process.c" />
+    <ClCompile Include="regedit.c" />
+    <ClCompile Include="service.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

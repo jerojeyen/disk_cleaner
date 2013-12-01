@@ -1,1 +1,1 @@
-int get_params(int ac, char **av, char (*params)[100]);
+int getParams(int argc, char **argv, char (*params)[100]);

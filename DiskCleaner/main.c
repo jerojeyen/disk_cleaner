@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 	message[0][0] = '\0';
 	message[1][0] = '\0';
 	lastBad = get_options(argc, argv, options, message);
-	get_params(argc, argv, params);
+	getParams(argc, argv, params);
 	if (lastBad != '\0')
 		return display_usage_error();
 
