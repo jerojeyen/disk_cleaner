@@ -1,3 +1,6 @@
+#ifndef OPTIONS_H_
+# define OPTIONS_H_
+
 char getOpts(int argc, char **argv, char *active_opts, char (*path)[260]);
 
 char matchOpts(char *arg, int argc, char **argv, int *argv_index,
@@ -6,3 +9,5 @@ char matchOpts(char *arg, int argc, char **argv, int *argv_index,
 int isActiveOpt(char opt, char *opts);
 
 int isValidOpt(char opt);
+
+#endif /* !OPTIONS_H_  */
