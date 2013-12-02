@@ -5,8 +5,8 @@
 
 # define BUFF	4096
 
-void	strDownCase(char *s);
-char	*strTrim(s);
+char	*strDownCase(char *s);
+char	*strTrim(char *s);
 char	*strSub(char *str, char *orig, char *rep);
 
 #endif /* !STR_H_*/

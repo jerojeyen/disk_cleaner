@@ -1,7 +1,7 @@
 #include <Windows.h>
 #include <stdio.h>
 #include <strsafe.h>
-#include "my_string.h"
+#include "str.h"
 
 INT display_error_msg(LPCTSTR text, DWORD dw)
 {
@@ -48,7 +48,7 @@ LPCTSTR get_error_msg(DWORD dw)
     StringCchPrintf((LPTSTR)lpDisplayBuf, 
         LocalSize(lpDisplayBuf) / sizeof(TCHAR),
         TEXT("%s"), lpMsgBuf); 
-    return (LPCTSTR)trim(((LPTSTR)lpDisplayBuf));
+    return (LPCTSTR)strTrim(((LPTSTR)lpDisplayBuf));
 }
 
 INT display_usage_error()

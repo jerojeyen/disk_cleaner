@@ -2,7 +2,7 @@
 #include <strsafe.h>
 #include <stdio.h>
 #include "log.h"
-#include "my_string.h"
+#include "str.h"
 #include "errors.h"
 #include "path.h"
 
@@ -55,7 +55,7 @@ INT read_directory(LPTSTR path, INT *num_done, INT *num_failed, INT wide_mode)
 			complete_path_in = (LPTSTR)LocalAlloc(LMEM_ZEROINIT, (lstrlen((LPCTSTR)path) + lstrlen((LPCTSTR)FindFileData.cFileName) + 2) * sizeof(TCHAR));
 			StringCchPrintf(complete_path_in,  LocalSize(complete_path_in) / sizeof(TCHAR), TEXT("%s\\%s"), path, FindFileData.cFileName); 
 			if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-				if (!strcmp(strtolower(FindFileData.cFileName), "temp") || !strcmp(strtolower(FindFileData.cFileName), "tmp")) {
+				if (!strcmp(strDownCase(FindFileData.cFileName), "temp") || !strcmp(strDownCase(FindFileData.cFileName), "tmp")) {
 					log_info_concat("Recursively entering in (Temp folder) : ", complete_path_in);
 					read_directory(complete_path_in, num_done, num_failed, 1); //Work recursively :)
 				}
@@ -89,7 +89,7 @@ LPTSTR get_filename_ext(LPTSTR filename)
     LPCTSTR dot = strrchr(filename, '.');
     if (!dot || dot == filename)
 		return ("");
-    return (strtolower((LPTSTR)dot + 1));
+    return (strDownCase((LPTSTR)dot + 1));
 }
 
 INT has_to_be_cleaned_up(WIN32_FIND_DATA filedata)

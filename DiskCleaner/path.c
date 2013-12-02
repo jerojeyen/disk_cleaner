@@ -1,7 +1,7 @@
 #include <Windows.h>
 #include "regedit.h"
 #include "log.h"
-#include "my_string.h"
+#include "str.h"
 
 LPTSTR get_windows_temp_path()
 {
@@ -16,7 +16,7 @@ LPTSTR get_windows_temp_path()
 		log_info("No Windows Temp folder");
 		return ("");
 	}
-	path = replace_str((LPTSTR)temp, "%SystemRoot%", (LPTSTR)system_root);
+	path = strSub((LPTSTR)temp, "%SystemRoot%", (LPTSTR)system_root);
 	log_info_concat("Windows Temp folder found : ", path);
 	return (path);
 }

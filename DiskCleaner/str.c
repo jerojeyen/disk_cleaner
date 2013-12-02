@@ -3,13 +3,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void	strDownCase(char *s)
+#include "str.h"
+
+char	*strDownCase(char *s)
 {
+	char	*save;
+
+	save = s;
 	while (*s)
 	{
 		*s = tolower(*s);
 		s++;	
 	}
+	return (save);
 }
 
 char	*strTrim(char *s)
@@ -29,8 +35,8 @@ char	*strSub(char *s, char *find, char *rep)
 		
 	if (!(srch = strstr(s, find)))
 		return (s);
-	strncpy(buf, str, srch - s);
-	buffer[srch - s] = 0;
-	sprintf(buf + (srch - s), "%s%s", rep, p + strlen(find));
+	strncpy(buf, srch, srch - s);
+	buf[srch - s] = 0;
+	sprintf(buf + (srch - s), "%s%s", rep, srch + strlen(find));
 	return (buf);
 }
