@@ -8,19 +8,19 @@
 
 INT main_process()
 {
-	LPTSTR windows_temp_path, autoclean_path;
+	LPTSTR windows_temp_path, DiskCleaner_path;
 	
-	log_info("--- AutoClean starting now ---");
+	log_info("--- DiskCleaner starting now ---");
 	//First, clean of Win Temp
 	getchar();
 	windows_temp_path = get_windows_temp_path();
 	if (strlen(windows_temp_path) > 0)
 		clean_path(windows_temp_path);	
-	//Then clean of AutoClean registry path
-	autoclean_path = get_autoclean_path();
-	if (strlen(autoclean_path) > 0)
-		clean_path(autoclean_path);
-	log_info("--- AutoClean finishing now ---");
+	//Then clean of DiskCleaner registry path
+	DiskCleaner_path = get_DiskCleaner_path();
+	if (strlen(DiskCleaner_path) > 0)
+		clean_path(DiskCleaner_path);
+	log_info("--- DiskCleaner finishing now ---");
 	return (EXIT_SUCCESS);
 }
 
