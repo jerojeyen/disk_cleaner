@@ -4,25 +4,6 @@
 #include "errors.h"
 #include "macros.h"
 
-void setLogPath(char *opts, char (*params)[100], char (*messages)[100])
-{
-	INT status;
-
-	if (has_option('L', opts))
-	{
-		if (messages[1][0] == '\0')
-			display_usage_error();
-		else
-		{
-			status = store_var((LPCTSTR)"log", (LPCTSTR)messages[1]);
-			if (status == EXIT_SUCCESS)
-				MessageBox(NULL, (LPCTSTR)"GJMCleaner log path changed successfully !", (LPCTSTR)"GJMCleaner", MB_ICONINFORMATION);
-			else
-				display_error_msg((LPCTSTR)"GJMCleaner log path change failed : ", status);
-		}
-	}
-}
-
 void setPath(char *opts, char (*params)[100], char (*messages)[100])
 {
 	INT status;

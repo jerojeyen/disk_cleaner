@@ -22,7 +22,6 @@ int main(int argc, char* argv[])
 		return display_usage_error();
 
 	setPath(options, params, message);
-	setLogPath(options, params, message);
 
 	if (argc > 1) {
 		if (has_option('i', options) && has_option('d', options))
