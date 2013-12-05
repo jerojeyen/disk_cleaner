@@ -11,9 +11,9 @@ void set_log_path(char *options, char (*params)[100], char (*messages)[100])
 	if (has_option('L', options) && messages[1][0] != '\0')	{
 		val_ret = store_var("log", messages[1]);
 		if (val_ret == EXIT_SUCCESS)
-			MessageBox(NULL, "AutoClean log path changed successfully !", "AutoClean", MB_ICONINFORMATION);
+			MessageBox(NULL, "diskcleaner log path changed successfully !", "diskcleaner", MB_ICONINFORMATION);
 		else
-			display_error_msg("AutoClean log path change failed : ", val_ret);
+			display_error_msg("diskcleaner log path change failed : ", val_ret);
 	}
 	if (has_option('L', options) && messages[1][0] == '\0')
 		display_usage_error();
@@ -26,9 +26,9 @@ void set_path(char *options, char (*params)[100], char (*messages)[100])
 	if (has_option('p', options) && messages[0][0] != '\0')	{
 		val_ret = store_var("path", messages[0]);
 		if(val_ret == EXIT_SUCCESS)
-			MessageBox(NULL, "AutoClean path changed successfully !", "AutoClean", MB_ICONINFORMATION);
+			MessageBox(NULL, "diskcleaner path changed successfully !", "diskcleaner", MB_ICONINFORMATION);
 		else
-			display_error_msg("AutoClean path change failed : ", val_ret);
+			display_error_msg("diskcleaner path change failed : ", val_ret);
 	}
 	if (has_option('p', options) && messages[0][0] == '\0')
 		display_usage_error();
@@ -53,7 +53,7 @@ BOOL InstallMyService()
 		return (FALSE);
 	}
 	CloseServiceHandle(schService);
-	MessageBox(NULL, "AutoClean installed in services !", "AutoClean", MB_ICONINFORMATION);
+	MessageBox(NULL, "diskcleaner installed in services !", "diskcleaner", MB_ICONINFORMATION);
 	return (TRUE);
 }
 
@@ -77,5 +77,5 @@ BOOL DeleteMyService()
 		display_error_msg("DeleteMyService", GetLastError());
 		return (FALSE);
 	}
-	MessageBox(NULL, "AutoClean deleted from services !", "AutoClean", MB_ICONINFORMATION);
+	MessageBox(NULL, "diskcleaner deleted from services !", "diskcleaner", MB_ICONINFORMATION);
 }
