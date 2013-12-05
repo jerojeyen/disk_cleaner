@@ -87,7 +87,7 @@ int isActiveOpt(char opt, char *opts)
 int isValidOpt(char opt)
 {
   int i = 0;
-  char* available_opts = "idp";
+  char* available_opts = "idpL";
 
   while (available_opts[i] != '\0')
   {
