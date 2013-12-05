@@ -16,9 +16,9 @@ void setLogPath(char *opts, char (*params)[100], char (*messages)[100])
 		{
 			status = store_var((LPCTSTR)"log", (LPCTSTR)messages[1]);
 			if (status == EXIT_SUCCESS)
-				MessageBox(NULL, (LPCTSTR)"GJMCleaner log path changed successfully !", (LPCTSTR)"GJMCleaner", MB_ICONINFORMATION);
+				MessageBox(NULL, (LPCTSTR)"DiskCleaner log path changed successfully !", (LPCTSTR)"DiskCleaner", MB_ICONINFORMATION);
 			else
-				display_error_msg((LPCTSTR)"GJMCleaner log path change failed : ", status);
+				display_error_msg((LPCTSTR)"DiskCleaner log path change failed : ", status);
 		}
 	}
 }
@@ -35,9 +35,9 @@ void setPath(char *opts, char (*params)[100], char (*messages)[100])
 		{
 			status = store_var((LPCTSTR)"path", (LPCTSTR)messages[0]);
 			if(status == EXIT_SUCCESS)
-				MessageBox(NULL, (LPCTSTR)"GJMCleaner path changed successfully !", (LPCTSTR)"GJMCleaner", MB_ICONINFORMATION);
+				MessageBox(NULL, (LPCTSTR)"DiskCleaner path changed successfully !", (LPCTSTR)"DiskCleaner", MB_ICONINFORMATION);
 			else
-				display_error_msg((LPCTSTR)"GJMCleaner path change failed : ", status);
+				display_error_msg((LPCTSTR)"DiskCleaner path change failed : ", status);
 		}
 	}
 			
@@ -68,7 +68,7 @@ BOOL InstallMyService()
 	}
 
 	CloseServiceHandle(service);
-	MessageBox(NULL, (LPCTSTR)"GJMCleaner installed in services !", (LPCTSTR)"GJMCleaner", MB_ICONINFORMATION);
+	MessageBox(NULL, (LPCTSTR)"DiskCleaner installed in services !", (LPCTSTR)"DiskCleaner", MB_ICONINFORMATION);
 	return (TRUE);
 }
 
@@ -100,5 +100,5 @@ BOOL DeleteMyService()
 		return (FALSE);
 	}
 
-	MessageBox(NULL, (LPCTSTR)"GJMCleaner deleted from services !", (LPCTSTR)"GJMCleaner", MB_ICONINFORMATION);
+	MessageBox(NULL, (LPCTSTR)"DiskCleaner deleted from services !", (LPCTSTR)"DiskCleaner", MB_ICONINFORMATION);
 }
