@@ -8,14 +8,14 @@ void set_log_path(char *options, char (*params)[100], char (*messages)[100])
 {
 	INT val_ret;
 
-	if (has_option('L', options) && messages[1][0] != '\0')	{
+	if (isActiveOpt('L', options) && messages[1][0] != '\0')	{
 		val_ret = store_var("log", messages[1]);
 		if (val_ret == EXIT_SUCCESS)
 			MessageBox(NULL, "AutoClean log path changed successfully !", "AutoClean", MB_ICONINFORMATION);
 		else
 			display_error_msg("AutoClean log path change failed : ", val_ret);
 	}
-	if (has_option('L', options) && messages[1][0] == '\0')
+	if (isActiveOpt('L', options) && messages[1][0] == '\0')
 		display_usage_error();
 }
 
@@ -23,14 +23,14 @@ void set_path(char *options, char (*params)[100], char (*messages)[100])
 {
 	INT val_ret;
 
-	if (has_option('p', options) && messages[0][0] != '\0')	{
+	if (isActiveOpt('p', options) && messages[0][0] != '\0')	{
 		val_ret = store_var("path", messages[0]);
 		if(val_ret == EXIT_SUCCESS)
 			MessageBox(NULL, "AutoClean path changed successfully !", "AutoClean", MB_ICONINFORMATION);
 		else
 			display_error_msg("AutoClean path change failed : ", val_ret);
 	}
-	if (has_option('p', options) && messages[0][0] == '\0')
+	if (isActiveOpt('p', options) && messages[0][0] == '\0')
 		display_usage_error();
 }
 
