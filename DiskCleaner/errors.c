@@ -24,7 +24,7 @@ INT display_error_msg(LPCTSTR text, DWORD dw)
         LocalSize(lpDisplayBuf) / sizeof(TCHAR),
         TEXT("%s failed with error %d: %s"), 
         text, dw, lpMsgBuf); 
-    MessageBox(NULL, (LPCTSTR)lpDisplayBuf, "AutoClean", MB_ICONERROR);
+    MessageBox(NULL, (LPCTSTR)lpDisplayBuf, "DiskCleaner", MB_ICONERROR);
 	return (EXIT_FAILURE);
 }
 
@@ -53,12 +53,12 @@ LPCTSTR get_error_msg(DWORD dw)
 
 INT display_usage_error()
 {
-	MessageBox(NULL, "Usage : AutoClean -[i|d] [-p path] [-L filename]", "AutoClean", MB_ICONINFORMATION);
+	MessageBox(NULL, "Usage : DiskCleaner -[i|d] [-p path] [-L filename]", "DiskCleaner", MB_ICONINFORMATION);
 	return (EXIT_FAILURE);
 }
 
 INT display_regedit_error()
 {
-	MessageBox(NULL, "Can't find path in regedit !", "AutoClean", MB_ICONERROR);
+	MessageBox(NULL, "Can't find path in regedit !", "DiskCleaner", MB_ICONERROR);
 	return (EXIT_FAILURE);
 }
