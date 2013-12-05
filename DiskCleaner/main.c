@@ -21,8 +21,8 @@ int main(int argc, char* argv[])
 	if (lastBad != '\0')
 		return display_usage_error();
 
-	set_path(options, params, message);
-	set_log_path(options, params, message);
+	setPath(options, params, message);
+	setLogPath(options, params, message);
 
 	if (argc > 1) {
 		if (has_option('i', options) && has_option('d', options))
