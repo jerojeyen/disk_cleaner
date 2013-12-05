@@ -1,103 +1,141 @@
 #include <Windows.h>
-#include <strsafe.h>
 #include <stdio.h>
+#include <strsafe.h>
+#include "errors.h"
 #include "log.h"
 #include "str.h"
-#include "errors.h"
 #include "path.h"
 
-INT main_process()
+int runProcess()
 {
-	LPTSTR windows_temp_path, autoclean_path;
+	LPTSTR os_path, service_path;
 	
-	log_info("--- AutoClean starting now ---");
-	//First, clean of Win Temp
-	getchar();
-	windows_temp_path = get_windows_temp_path();
-	if (strlen(windows_temp_path) > 0)
-		clean_path(windows_temp_path);	
-	//Then clean of AutoClean registry path
-	autoclean_path = get_autoclean_path();
-	if (strlen(autoclean_path) > 0)
-		clean_path(autoclean_path);
-	log_info("--- AutoClean finishing now ---");
+	log_info("MyDiskCleaner: starting");
+
+	service_path = get_autoclean_path();
+	os_path = get_windows_temp_path();
+
+	if (strlen(os_path) > 0)
+        {
+		cleanDir(os_path);	
+        }
+	if (strlen(service_path) > 0)
+        {
+		cleanDir(service_path);
+        }
+
+	log_info("MyDiskCleaner: done");
 	return (EXIT_SUCCESS);
 }
 
-INT clean_path(LPTSTR path)
+INT cleanDir(LPTSTR path)
 {
-	INT num_done, num_failed;
-	char num_done_str[100] = "", num_failed_str[100] = "";
+	INT ok_cnt = 0;
+        INT ko_cnt = 0;
+	char ok_buffer[42] = "";
+        char ko_buffer[42] = "";
 
-	num_done = 0;
-	num_failed = 0;
-	read_directory(path, &num_done, &num_failed, 0);
-	log_info_concat("Done. Number of files cleaned : ", itoa(num_done, num_done_str, 10));
-	if (num_failed > 0)
-		log_info_concat("But number of files cleaning failed : ", itoa(num_failed, num_failed_str, 10));
+	cleanRecursive(path, &ok_cnt, &ko_cnt, 0);
+
+	log_info_concat("Files successfully deleted: ", itoa(ok_cnt, ok_buffer, 10));
+
+	if (ko_cnt > 0)
+        {
+		log_info_concat("The following number of files couldn't be deleted: ",
+                        itoa(ko_cnt, ko_buffer, 10));
+        }
+
 	return (EXIT_SUCCESS);
 }
 
-INT read_directory(LPTSTR path, INT *num_done, INT *num_failed, INT wide_mode)
+INT cleanRecursive(LPTSTR path, INT temp_flag, INT *ok_cnt, INT *ko_cnt)
 {
-	WIN32_FIND_DATA FindFileData;
-	HANDLE hFind;
-	LPTSTR complete_path, complete_path_in;
+	HANDLE handle;
+	WIN32_FIND_DATA data;
+	LPTSTR full_path, target_path;
 
-	complete_path = (LPTSTR)LocalAlloc(LMEM_ZEROINIT, (lstrlen((LPCTSTR)path) + 5) * sizeof(TCHAR)); 
-	StringCchPrintf(complete_path,  LocalSize(complete_path) / sizeof(TCHAR), TEXT("%s\\*.*"), path);
-	if ((hFind = FindFirstFile(complete_path, &FindFileData)) == INVALID_HANDLE_VALUE) {
-		log_info_concat("Error reading folder : ", get_error_msg(GetLastError()));
+	full_path = (LPTSTR)LocalAlloc(LMEM_ZEROINIT,
+                (lstrlen((LPCTSTR)path) + 5) * sizeof(TCHAR)); 
+	StringCchPrintf(full_path,  LocalSize(full_path) / sizeof(TCHAR),
+                TEXT("%s\\*.*"), path);
+        handle = FindFirstFile(full_path, &data);
+
+	if (handle == INVALID_HANDLE_VALUE)
+        {
+		log_info_concat("Couldn't read the specified folder: ",
+                        get_error_msg(GetLastError()));
 		return (EXIT_FAILURE);
 	}
+
+        // Loop through the files in the folder and clean them recursively
 	do {
-		if (strcmp((LPCTSTR)FindFileData.cFileName, "..") != 0 && strcmp((LPCTSTR)FindFileData.cFileName, ".") != 0) {
-			complete_path_in = (LPTSTR)LocalAlloc(LMEM_ZEROINIT, (lstrlen((LPCTSTR)path) + lstrlen((LPCTSTR)FindFileData.cFileName) + 2) * sizeof(TCHAR));
-			StringCchPrintf(complete_path_in,  LocalSize(complete_path_in) / sizeof(TCHAR), TEXT("%s\\%s"), path, FindFileData.cFileName); 
-			if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-				if (!strcmp(strDownCase(FindFileData.cFileName), "temp") || !strcmp(strDownCase(FindFileData.cFileName), "tmp")) {
-					log_info_concat("Recursively entering in (Temp folder) : ", complete_path_in);
-					read_directory(complete_path_in, num_done, num_failed, 1); //Work recursively :)
+		if (strcmp((LPCTSTR)data.cFileName, "..") != 0
+                        && strcmp((LPCTSTR)data.cFileName, ".") != 0)
+                {
+			target_path = (LPTSTR)LocalAlloc(LMEM_ZEROINIT, (lstrlen((LPCTSTR)path) + lstrlen((LPCTSTR)data.cFileName) + 2) * sizeof(TCHAR));
+			StringCchPrintf(target_path,  LocalSize(target_path) / sizeof(TCHAR), TEXT("%s\\%s"), path, data.cFileName); 
+			if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                        {
+				if (!strcmp(strDownCase(data.cFileName), "temp")
+                                        || !strcmp(strDownCase(data.cFileName), "tmp"))
+                                {
+					log_info_concat("Recursive call on temporary folder: ",
+                                                target_path);
+					cleanRecursive(target_path, 1, ok_cnt, ko_cnt);
 				}
-				else {
-					log_info_concat("Recursively entering in : ", complete_path_in);
-					read_directory(complete_path_in, num_done, num_failed, 0);
+				else
+                                {
+					log_info_concat("Recursive on regular folder: ", target_path);
+					read_directory(target_path, 0, ok_cnt, ko_cnt);
 				}
 			}
-			else if (has_to_be_cleaned_up(FindFileData) || wide_mode) {
-				if (DeleteFile(complete_path_in)) {
-					*num_done += 1;
-					log_info_supress(complete_path_in);
+			else if (isTemp(data) || temp_flag)
+                        {
+				if (DeleteFile(target_path))
+                                {
+					log_info_supress(target_path);
+					*ok_cnt += 1;
 				}
-				else {
-					*num_failed += 1;
-					log_info_err_supp(complete_path_in, GetLastError());
+				else
+                                {
+					log_info_err_supp(target_path, GetLastError());
+					*ko_cnt += 1;
 				}
 			}
 			
 		}
-	} while (FindNextFile(hFind, &FindFileData) != 0);	
-	if (!FindClose(hFind)) {
-		log_info_concat("Error closing folder : ", get_error_msg(GetLastError()));
+	} while (FindNextFile(handle, &data) != 0);	
+
+	if (!FindClose(handle))
+        {
+		log_info_concat("Couldn't close the specified folder : ",
+                        get_error_msg(GetLastError()));
 		return (EXIT_FAILURE);
 	}
+
 	return (EXIT_SUCCESS);
 }
 
-LPTSTR get_filename_ext(LPTSTR filename)
+LPTSTR getExtension(LPTSTR file_name)
 {
-    LPCTSTR dot = strrchr(filename, '.');
-    if (!dot || dot == filename)
-		return ("");
-    return (strDownCase((LPTSTR)dot + 1));
+    LPCTSTR str;
+   
+    str = strrchr(file_name, '.');
+    if (str == file_name || !str)
+    {
+	return ("");
+    }
+    return (strDownCase( (LPTSTR)str + 1) );
 }
 
-INT has_to_be_cleaned_up(WIN32_FIND_DATA filedata)
+int isTemp(WIN32_FIND_DATA data)
 {
-	LPTSTR ext_file;
+	LPTSTR extension = getExtension(data.cFileName);
 
-	ext_file = get_filename_ext(filedata.cFileName);
-	if (filedata.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY || strcmp(ext_file, "tmp") == 0)
+	if (strcmp(extension, "tmp") == 0 ||
+                data.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY)
+        {
 		return (1);
+        }
 	return (0);
 }
