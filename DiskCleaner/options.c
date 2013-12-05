@@ -1,101 +1,72 @@
 #include <string.h>
 #include "options.h"
 
-char getOpts(int argc, char **argv, char *active_opts, char (*path)[260])
+char get_options(int ac, char **av, char *options, char (*message)[100])
 {
   int i;
-  int j = 0;
-  char invalid_opt;
+  int j;
+  char lastBad;
 
-  for (i = 1; i < argc; i++)
-  {
-    if (argv[i][0] == '-')
-    {
-      invalid_opt = matchOpts(argv[i], argc, argv, &i, &j,
-          active_opts, path);
-      if (invalid_opt)
-      {
-        return (invalid_opt);
-      }
+  j = 0;
+  for (i = 1; i < ac; i++) {
+    if (av[i][0] == '-') {
+      lastBad = catch_options(av[i], ac, av, &i, &j, options, message);
+      if (lastBad)
+	return (lastBad);
     }
     else
-    {
       return (0);
-    }
   }
-  active_opts[j] = '\0';
+  options[j] = '\0';
   return (0);
 }
 
-/**
- * Match 'arg' against the available options and fill the
- * 'active_opts' and 'path' strings
- */
-char matchOpts(char *arg, int argc, char **argv, int *argv_index,
-    int *active_opts_index, char *active_opts, char (*path)[260])
+char catch_options(char *param, int ac, char **av, int *k, int *index, char *options, char (*message)[100])
+{
+  unsigned int i;
+
+  for (i = 1; i < strlen(param); i++) {
+    if (!has_option(param[i], options)) {
+      if (is_valid_option(param[i])) {
+	options[*index] = param[i];
+	if (param[i] == 'p' && (*k + 1) <= (ac - 1)) {	
+		*k = *k + 1;
+		strcpy(message[0], av[*k]);
+	}
+	else if (param[i] == 'L' && (*k + 1) <= (ac - 1)) {	
+		*k = *k + 1;
+		strcpy(message[1], av[*k]);
+	}
+	*index = *index + 1;
+      }
+      else
+	return (param[i]);
+    }
+  }
+  return (0);
+}
+
+int has_option(char option, char *options)
 {
   int i;
 
-  // 'arg' can contain several options concatenated
-  for (i = 1; i < strlen(arg); i++)
-  {
-    // if the option hasn't been activated yet
-    if (!isActiveOpt(arg[i], active_opts))
-    {
-      if (isValidOpt(arg[i]))
-      {
-        active_opts[*active_opts_index] = arg[i];
-        if (arg[i] == 'p' && (*argv_index + 1) <= (argc - 1))
-        {
-          (*argv_index)++;
-          strcpy(path[0], argv[*argv_index]);
-        }
-        (*active_opts_index)++;
-      }
-      else
-      {
-        return (arg[i]);
-      }
-    }
+  i = 0;
+  while (options[i] != '\0') {
+    if (options[i++] == option)
+      return (1);
   }
   return (0);
 }
 
-/**
- * Returns 1 if the option 'opt' is active
- * and 0 otherwise
- */
-int isActiveOpt(char opt, char *opts)
+int is_valid_option(char option)
 {
-  int i = 0;
+  int i;
+  char valid_option[] = "idpL";
 
-  while (opts[i])
-  {
-    if (opt == opts[i])
-    {
+  i = 0;
+  while (valid_option[i] != '\0') {
+    if (valid_option[i++] == option)
       return (1);
-    }
-    i++;
-  }
-  return (0);
-}
-
-/**
- * Returns 1 if the option 'opt' is a valid one
- * and 0 otherwise
- */
-int isValidOpt(char opt)
-{
-  int i = 0;
-  char* available_opts = "idpL";
-
-  while (available_opts[i] != '\0')
-  {
-    if (opt == available_opts[i])
-    {
-      return (1);
-    }
-    i++;
   }
   return (0);
 }
